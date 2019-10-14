@@ -1,3 +1,7 @@
+# elgentos fork of laravel-harvest
+
+Used internally in `elgentos-mt/acapulco`
+
 #  A Laravel wrapper for the [Harvest API](https://help.getharvest.com/api-v2/)
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
