@@ -57,7 +57,7 @@ trait HasExternalRelations
      */
     private function relationExists($relation)
     {
-        return in_array($relation, $this->getExternalRelations()) || array_has($this->getExternalRelations(), $relation);
+        return in_array($relation, $this->getExternalRelations()) || \Illuminate\Support\Arr::has($this->getExternalRelations(), $relation);
     }
 
     /**

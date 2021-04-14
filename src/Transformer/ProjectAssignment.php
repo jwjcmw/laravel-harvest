@@ -26,8 +26,8 @@ class ProjectAssignment implements Transformer
         $projectAssignment->budget = $data['budget'];
         $projectAssignment->task_assignments = $data['task_assignments'];
 
-        $projectAssignment->external_project_id = array_get($data, 'project.id');
-        $projectAssignment->external_client_id = array_get($data, 'client.id');
+        $projectAssignment->external_project_id = \Illuminate\Support\Arr::get($data, 'project.id');
+        $projectAssignment->external_client_id = \Illuminate\Support\Arr::get($data, 'client.id');
 
         return $projectAssignment;
     }

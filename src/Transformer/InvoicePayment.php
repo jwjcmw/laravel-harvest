@@ -20,10 +20,10 @@ class InvoicePayment implements Transformer
         }
 
         $invoicePayment->external_id = $data['id'];
-        $invoicePayment->payment_gateway_id = array_get($data, 'payment_gateway_id', null);
+        $invoicePayment->payment_gateway_id = \Illuminate\Support\Arr::get($data, 'payment_gateway_id', null);
         $invoicePayment->amount = $data['amount'];
         $invoicePayment->recorded_by = $data['recorded_by'];
-        $invoicePayment->recorded_by_email = array_get($data, 'recorded_by_email', null);
+        $invoicePayment->recorded_by_email = \Illuminate\Support\Arr::get($data, 'recorded_by_email', null);
         $invoicePayment->notes = $data['notes'];
         $invoicePayment->transaction_id = $data['transaction_id'];
         $invoicePayment->paid_at = $data['paid_at'];

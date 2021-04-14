@@ -24,7 +24,7 @@ class TaskAssignment implements Transformer
         $taskAssignment->hourly_rate = $data['hourly_rate'];
         $taskAssignment->budget = $data['budget'];
 
-        $taskAssignment->external_task_id = array_get($data, 'task.id');
+        $taskAssignment->external_task_id = \Illuminate\Support\Arr::get($data, 'task.id');
 
         return $taskAssignment;
     }

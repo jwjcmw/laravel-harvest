@@ -40,8 +40,8 @@ class Estimate implements TransformerContract
         $estimate->declined_at = $data['declined_at'];
         $estimate->discount_amount = $data['discount_amount'];
 
-        $estimate->external_client_id = array_get($data, 'client.id');
-        $estimate->external_creator_id = array_get($data, 'creator.id');
+        $estimate->external_client_id = \Illuminate\Support\Arr::get($data, 'client.id');
+        $estimate->external_creator_id = \Illuminate\Support\Arr::get($data, 'creator.id');
 
         return $estimate;
     }

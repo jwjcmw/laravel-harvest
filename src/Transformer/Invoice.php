@@ -45,9 +45,9 @@ class Invoice implements Transformer
         $invoice->paid_at = $data['paid_at'];
         $invoice->closed_at = $data['closed_at'];
 
-        $invoice->external_client_id = array_get($data, 'client.id');
-        $invoice->external_creator_id = array_get($data, 'creator.id');
-        $invoice->external_estimate_id = array_get($data, 'estimate.id');
+        $invoice->external_client_id = \Illuminate\Support\Arr::get($data, 'client.id');
+        $invoice->external_creator_id = \Illuminate\Support\Arr::get($data, 'creator.id');
+        $invoice->external_estimate_id = \Illuminate\Support\Arr::get($data, 'estimate.id');
 
         return $invoice;
     }

@@ -25,7 +25,7 @@ class UserAssignment implements Transformer
         $userAssignment->hourly_rate = $data['hourly_rate'];
         $userAssignment->budget = $data['budget'];
 
-        $userAssignment->external_user_id = array_get($data, 'user.id');
+        $userAssignment->external_user_id = \Illuminate\Support\Arr::get($data, 'user.id');
 
         return $userAssignment;
     }

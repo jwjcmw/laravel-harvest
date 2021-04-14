@@ -35,7 +35,7 @@ class Company implements TransformerContract
         $company->expense_feature = $data['expense_feature'];
         $company->invoice_feature = $data['invoice_feature'];
         $company->estimate_feature = $data['estimate_feature'];
-        $company->approval_feature = array_get($data, 'approval_feature', null);
+        $company->approval_feature = \Illuminate\Support\Arr::get($data, 'approval_feature', null);
 
         return $company;
     }

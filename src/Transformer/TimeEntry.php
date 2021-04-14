@@ -37,13 +37,13 @@ class TimeEntry implements Transformer
         $timeEntry->spent_date = $data['spent_date'];
         $timeEntry->timer_started_at = $data['timer_started_at'];
 
-        $timeEntry->external_user_id = array_get($data, 'user.id');
-        $timeEntry->external_user_assignment_id = array_get($data, 'user_assignment.id');
-        $timeEntry->external_client_id = array_get($data, 'client.id');
-        $timeEntry->external_project_id = array_get($data, 'project.id');
-        $timeEntry->external_task_id = array_get($data, 'task.id');
-        $timeEntry->external_task_assignment_id = array_get($data, 'task_assignment.id');
-        $timeEntry->external_invoice_id = array_get($data, 'invoice.id');
+        $timeEntry->external_user_id = \Illuminate\Support\Arr::get($data, 'user.id');
+        $timeEntry->external_user_assignment_id = \Illuminate\Support\Arr::get($data, 'user_assignment.id');
+        $timeEntry->external_client_id = \Illuminate\Support\Arr::get($data, 'client.id');
+        $timeEntry->external_project_id = \Illuminate\Support\Arr::get($data, 'project.id');
+        $timeEntry->external_task_id = \Illuminate\Support\Arr::get($data, 'task.id');
+        $timeEntry->external_task_assignment_id = \Illuminate\Support\Arr::get($data, 'task_assignment.id');
+        $timeEntry->external_invoice_id = \Illuminate\Support\Arr::get($data, 'invoice.id');
 
         return $timeEntry;
     }

@@ -28,7 +28,7 @@ class Contact implements TransformerContract
         $contact->phone_mobile = $data['phone_mobile'];
         $contact->fax = $data['fax'];
 
-        $contact->external_client_id = array_get($data, 'client.id');
+        $contact->external_client_id = \Illuminate\Support\Arr::get($data, 'client.id');
 
         return $contact;
     }

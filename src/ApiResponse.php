@@ -83,7 +83,7 @@ class ApiResponse
         }
 
         return new self(
-            (new ApiGateway())->execute(array_get($this->jsonResult, 'links.next')),
+            (new ApiGateway())->execute(\Illuminate\Support\Arr::get($this->jsonResult, 'links.next')),
             $this->model
         );
     }
@@ -100,19 +100,19 @@ class ApiResponse
         }
 
         return new self(
-            (new ApiGateway())->execute(array_get($this->jsonResult, 'links.previous')),
+            (new ApiGateway())->execute(\Illuminate\Support\Arr::get($this->jsonResult, 'links.previous')),
             $this->model
         );
     }
 
     public function hasNextPage()
     {
-        return array_get($this->jsonResult, 'links.next') != null;
+        return \Illuminate\Support\Arr::get($this->jsonResult, 'links.next') != null;
     }
 
     public function hasPreviousPage()
     {
-        return array_get($this->jsonResult, 'links.previous') != null;
+        return \Illuminate\Support\Arr::get($this->jsonResult, 'links.previous') != null;
     }
 
     /**
@@ -133,8 +133,8 @@ class ApiResponse
      */
     private function getResultsKey()
     {
-        return snake_case(
-            str_plural(
+        return \Illuminate\Support\Str::snake(
+            \Illuminate\Support\Str::plural(
                 class_basename($this->model)
             )
         );

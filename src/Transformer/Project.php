@@ -40,7 +40,7 @@ class Project implements Transformer
         $project->ends_on = $data['ends_on'];
         $project->over_budget_notification_date = $data['over_budget_notification_date'];
 
-        $project->external_client_id = array_get($data, 'client.id');
+        $project->external_client_id = \Illuminate\Support\Arr::get($data, 'client.id');
 
         return $project;
     }
