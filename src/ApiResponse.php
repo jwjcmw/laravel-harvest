@@ -133,8 +133,8 @@ class ApiResponse
      */
     private function getResultsKey()
     {
-        return snake_case(
-            str_plural(
+        return \Illuminate\Support\Str::snake(
+            \Illuminate\Support\Str::plural(
                 class_basename($this->model)
             )
         );
