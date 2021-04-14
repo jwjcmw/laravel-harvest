@@ -15,6 +15,6 @@ class ApiGateway
         return Zttp::withHeaders([
             'Authorization' => 'Bearer '.config('harvest.api_key'),
             'Harvest-Account-Id' => config('harvest.account_id'),
-        ])->get($path);
+        ])->get($path['url'] ?? $path);
     }
 }
