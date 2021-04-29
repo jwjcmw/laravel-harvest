@@ -2,6 +2,8 @@
 
 namespace Byte5\LaravelHarvest\Endpoints;
 
+use Carbon\Carbon;
+
 abstract class BaseEndpoint
 {
     /**
@@ -155,5 +157,5 @@ abstract class BaseEndpoint
 
         $this->params += ['updated_since' => $dateTime->toIso8601ZuluString()];
     }
-    
+
 }
