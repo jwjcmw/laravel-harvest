@@ -26,6 +26,7 @@ class UserAssignment implements Transformer
         $userAssignment->budget = $data['budget'];
 
         $userAssignment->external_user_id = \Illuminate\Support\Arr::get($data, 'user.id');
+        $userAssignment->external_project_id = \Illuminate\Support\Arr::get($data, 'project.id');
 
         return $userAssignment;
     }

@@ -26,7 +26,7 @@ class UserAssignment extends Model
      * @var array
      */
     protected $fillable = [
-        'external_id', 'user_id', 'is_active', 'is_project_manager', 'hourly_rate', 'budget',
+        'external_project_id','external_id', 'user_id', 'is_active', 'is_project_manager', 'hourly_rate', 'budget',
     ];
 
     /**
