@@ -9,7 +9,7 @@ class UserAssignment extends BaseEndpoint
      */
     protected function getPath()
     {
-        return 'projects/{id}/user_assignments';
+        return ($this->baseId) ? 'projects/{ID}/user_assignments' : 'user_assignments';
     }
 
     /**
