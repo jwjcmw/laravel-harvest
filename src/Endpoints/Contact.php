@@ -30,15 +30,4 @@ class Contact extends BaseEndpoint
         $this->params += ['client_id' => $id];
     }
 
-    /**
-     * @param $dateTime
-     */
-    public function updatedSince($dateTime)
-    {
-        if (! $dateTime instanceof Carbon) {
-            $dateTime = Carbon::parse($dateTime);
-        }
-
-        $this->params += ['updated_since' => $dateTime->toIso8601ZuluString()];
-    }
 }

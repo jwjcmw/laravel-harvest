@@ -47,18 +47,6 @@ class TimeEntry extends BaseEndpoint
     }
 
     /**
-     * @param $date
-     */
-    public function updatedSince($date)
-    {
-        if (! $date instanceof Carbon) {
-            $date = Carbon::parse($date);
-        }
-
-        $this->params += ['updated_since' => $date->format('Y-m-d')];
-    }
-
-    /**
      * @param $isBilled
      */
     public function isBilled(bool $isBilled)
