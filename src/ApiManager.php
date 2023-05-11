@@ -3,8 +3,74 @@
 namespace Byte5\LaravelHarvest;
 
 use Byte5\LaravelHarvest\Endpoints\BaseEndpoint;
+use Byte5\LaravelHarvest\Endpoints\Client;
+use Byte5\LaravelHarvest\Endpoints\Company;
+use Byte5\LaravelHarvest\Endpoints\Contact;
+use Byte5\LaravelHarvest\Endpoints\Estimate;
+use Byte5\LaravelHarvest\Endpoints\EstimateItemCategory;
+use Byte5\LaravelHarvest\Endpoints\EstimateMessage;
+use Byte5\LaravelHarvest\Endpoints\Expense;
+use Byte5\LaravelHarvest\Endpoints\ExpenseCategory;
+use Byte5\LaravelHarvest\Endpoints\Invoice;
+use Byte5\LaravelHarvest\Endpoints\InvoiceItemCategory;
+use Byte5\LaravelHarvest\Endpoints\InvoiceMessage;
+use Byte5\LaravelHarvest\Endpoints\InvoicePayment;
+use Byte5\LaravelHarvest\Endpoints\Project;
+use Byte5\LaravelHarvest\Endpoints\ProjectAssignment;
+use Byte5\LaravelHarvest\Endpoints\ReportsUninvoiced;
+use Byte5\LaravelHarvest\Endpoints\Role;
+use Byte5\LaravelHarvest\Endpoints\Task;
+use Byte5\LaravelHarvest\Endpoints\TaskAssignment;
+use Byte5\LaravelHarvest\Endpoints\TimeEntry;
+use Byte5\LaravelHarvest\Endpoints\User;
+use Byte5\LaravelHarvest\Endpoints\UserAssignment;
 use Byte5\LaravelHarvest\Traits\CanResolveEndpoints;
 
+/**
+ * @method Client client()
+ * @method Company company()
+ * @method Contact contact()
+ * @method Estimate estimate()
+ * @method EstimateItemCategory estimateItemCategory()
+ * @method EstimateMessage estimateMessage()
+ * @method Expense expense()
+ * @method ExpenseCategory expenseCategory()
+ * @method Invoice invoice()
+ * @method InvoiceItemCategory invoiceItemCategory()
+ * @method InvoiceMessage invoiceMessage()
+ * @method InvoicePayment invoicePayment()
+ * @method Project project()
+ * @method ProjectAssignment projectAssignment()
+ * @method ReportsUninvoiced reportsUninvoiced()
+ * @method Role role()
+ * @method Task task()
+ * @method TaskAssignment taskAssignment()
+ * @method TimeEntry timeEntry()
+ * @method User user()
+ * @method UserAssignment userAssignment()
+ *
+ * @property Client clients
+ * @property Company companies
+ * @property Contact contacts
+ * @property Estimate estimates
+ * @property EstimateItemCategory estimateItemCategories
+ * @property EstimateMessage estimateMessages
+ * @property Expense expenses
+ * @property ExpenseCategory expenseCategories
+ * @property Invoice invoices
+ * @property InvoiceItemCategory invoiceItemCategories
+ * @property InvoiceMessage invoiceMessages
+ * @property InvoicePayment invoicePayments
+ * @property Project projects
+ * @property ProjectAssignment projectAssignments
+ * @property ReportsUninvoiced reportsUninvoiceds
+ * @property Role roles
+ * @property Task tasks
+ * @property TaskAssignment taskAssignments
+ * @property TimeEntry timeEntries
+ * @property User users
+ * @property UserAssignment userAssignments
+ */
 class ApiManager
 {
     use CanResolveEndpoints;
