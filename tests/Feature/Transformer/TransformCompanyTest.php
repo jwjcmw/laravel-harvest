@@ -6,14 +6,14 @@ use Illuminate\Support\Collection;
 use Byte5\LaravelHarvest\ApiResponse;
 use Byte5\LaravelHarvest\Test\TestCase;
 use Byte5\LaravelHarvest\Models\Company;
-use Byte5\LaravelHarvest\Test\Fakes\FakeZttpResponse;
+use Byte5\LaravelHarvest\Test\Fakes\FakeApiResponse;
 
 class TransformCompanyTest extends TestCase
 {
     /** @test **/
     public function it_can_transform_companies_api_responses_into_their_corresponding_models()
     {
-        $apiResult = new FakeZttpResponse($this->getFakeData());
+        $apiResult = new FakeApiResponse($this->getFakeData());
 
         $collection = (new ApiResponse($apiResult, Company::class))->toCollection();
 

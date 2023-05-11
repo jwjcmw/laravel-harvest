@@ -6,14 +6,14 @@ use Illuminate\Support\Collection;
 use Byte5\LaravelHarvest\ApiResponse;
 use Byte5\LaravelHarvest\Test\TestCase;
 use Byte5\LaravelHarvest\Models\Contact;
-use Byte5\LaravelHarvest\Test\Fakes\FakeZttpResponse;
+use Byte5\LaravelHarvest\Test\Fakes\FakeApiResponse;
 
 class TransformContactsTest extends TestCase
 {
     /** @test **/
     public function it_can_transform_contacts_api_responses_into_their_corresponding_models()
     {
-        $apiResult = new FakeZttpResponse($this->getFakeData());
+        $apiResult = new FakeApiResponse($this->getFakeData());
 
         $collection = (new ApiResponse($apiResult, Contact::class))->toCollection();
 
@@ -24,7 +24,7 @@ class TransformContactsTest extends TestCase
     /** @test **/
     public function it_can_transform_contacts_api_responses_into_a_paginated_collection()
     {
-        $apiResult = new FakeZttpResponse($this->getFakeData());
+        $apiResult = new FakeApiResponse($this->getFakeData());
 
         $paginatedCollection = (new ApiResponse($apiResult, Contact::class))
             ->toPaginatedCollection();

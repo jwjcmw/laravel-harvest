@@ -3,9 +3,14 @@
 namespace Byte5\LaravelHarvest\Test\Fakes;
 
 use Byte5\LaravelHarvest\ApiManager;
+use Byte5\LaravelHarvest\ApiResponse;
+use GuzzleHttp\Psr7\Response;
 
 class FakeApiManager extends ApiManager
 {
+    /**
+     * @var callable
+     */
     protected $beforeCraftingResponseCallback;
 
     /**
@@ -24,10 +29,7 @@ class FakeApiManager extends ApiManager
         return $this->endpoint;
     }
 
-    /**
-     * @param $callback
-     */
-    public function beforeCraftingResponse($callback)
+    public function beforeCraftingResponse(callable $callback): void
     {
         $this->beforeCraftingResponseCallback = $callback;
     }
@@ -35,13 +37,11 @@ class FakeApiManager extends ApiManager
     /**
      * @param $name
      * @param $arguments
-     * @return FakeApiManager|ApiResponse
+     * @return ApiResponse
      * @override
      */
     public function __call($name, $arguments)
     {
-        $apiCall = null;
-
         if ($this->isStaticCall() && ! $this->endpoint) {
             $this->setEndpoint($name);
 
@@ -53,19 +53,21 @@ class FakeApiManager extends ApiManager
         }
 
         $url = call_user_func_array([$this->endpoint, $name], $arguments);
-
-        if ($url == null) {
+        if (null === $url) {
             return $this;
         }
 
-        if ($this->beforeCraftingResponseCallback != null) {
-            $callback = $this->beforeCraftingResponseCallback;
-            $this->beforeCraftingResponseCallback = null;
-            $callback();
-        }
+        $this->beforeCraftingResponseCallback !== null && ($this->beforeCraftingResponseCallback)();
+        $this->beforeCraftingResponseCallback = null;
 
-        return tap($this->craftResponse($url), function () {
-            $this->clearEndpoint();
-        });
+        return tap($this->craftResponse($url), $this->clearEndpoint(...));
+    }
+
+    protected function craftResponse($url): ApiResponse
+    {
+        return new ApiResponse(
+            new Response(),
+            $this->endpoint->getModel()
+        );
     }
 }

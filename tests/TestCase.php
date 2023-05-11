@@ -7,7 +7,7 @@ use Byte5\LaravelHarvest\Test\Fakes\FakeApiManager;
 
 class TestCase extends Orchestra
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
