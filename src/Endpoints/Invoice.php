@@ -62,4 +62,11 @@ class Invoice extends BaseEndpoint
 
         $this->params += ['to' => $date->format('Y-m-d')];
     }
+
+    public function delete(int $id)
+    {
+        $this->buildUrl('/' . $id);
+
+        return ['url' => $this->getUrl(), 'method' => 'DELETE'];
+    }
 }
