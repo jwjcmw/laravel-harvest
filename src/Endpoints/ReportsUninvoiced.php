@@ -14,7 +14,7 @@ class ReportsUninvoiced extends BaseEndpoint
 
     public function getModel(): string
     {
-        return \Byte5\LaravelHarvest\Models\ReportsUninvoiced::class;
+        return \Byte5\LaravelHarvest\Models\Reports\Uninvoiced\Result::class;
     }
 
     public function from(string|Carbon $from): void

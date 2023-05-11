@@ -1,7 +1,9 @@
 <?php
 
-namespace Byte5\LaravelHarvest\Models;
+namespace Byte5\LaravelHarvest\Models\Reports\Uninvoiced;
 
+use Byte5\LaravelHarvest\Models\Client;
+use Byte5\LaravelHarvest\Models\Project;
 use Byte5\LaravelHarvest\Traits\HasExternalRelations;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float uninvoiced_expenses
  * @property float uninvoiced_amount
  */
-class ReportsUninvoiced extends Model
+class Result extends Model
 {
     use HasExternalRelations;
 
