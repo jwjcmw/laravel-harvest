@@ -102,9 +102,8 @@ class ApiResponse
     {
         return $this->convertDateTimes($data)
             ->map(function ($data) {
-            $transformerName = '\\Byte5\\LaravelHarvest\\Transformer\\' . class_basename($this->model);
-
-            return (new $transformerName)->transformModelAttributes($data);
+                $transformerName = '\\Byte5\\LaravelHarvest\\Transformer\\' . class_basename($this->model);
+                return (new $transformerName)->transformModelAttributes($data);
         });
     }
 
