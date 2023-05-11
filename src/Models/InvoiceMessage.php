@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class InvoiceMessage extends Model
 {
-    /**
-     * @var array
-     */
     protected $casts = [
         'recipients' => 'array',
         'include_link_to_client_invoice' => 'boolean',
@@ -17,15 +14,7 @@ class InvoiceMessage extends Model
         'thank_you' => 'boolean',
         'reminder' => 'boolean',
     ];
-
-    /**
-     * @var array
-     */
     protected $dates = ['created_at', 'updated_at'];
-
-    /**
-     * @var array
-     */
     protected $fillable = [
         'external_id', 'sent_by', 'sent_by_email', 'sent_from', 'sent_from_email',
         'recipients', 'subject', 'body', 'include_link_to_client_invoice',
@@ -33,10 +22,6 @@ class InvoiceMessage extends Model
         'reminder', 'send_reminder_on',
     ];
 
-    /**
-     * InvoiceMessage constructor.
-     * @param array $attributes
-     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

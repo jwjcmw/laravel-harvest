@@ -9,23 +9,12 @@ class Estimate extends Model
 {
     use HasExternalRelations;
 
-    /**
-     * @var array
-     */
     protected $casts = [
         'line_items' => 'array',
     ];
-
-    /**
-     * @var array
-     */
     protected $dates = [
         'created_at', 'updated_at', 'issue_date', 'sent_at', 'accepted_at', 'declined_at',
     ];
-
-    /**
-     * @var array
-     */
     protected $fillable = [
         'external_id', 'creator_id', 'line_items', 'client_key', 'number', 'purchase_order',
         'amount', 'tax', 'tax_amount', 'tax2', 'tax2_amount', 'discount', 'discount_amount',
@@ -33,10 +22,6 @@ class Estimate extends Model
         'declined_at', 'discount_amount', 'client_id',
     ];
 
-    /**
-     * Estimate constructor.
-     * @param array $attributes
-     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -46,25 +31,16 @@ class Estimate extends Model
         );
     }
 
-    /**
-     * @return array
-     */
-    protected function getExternalRelations()
+    protected function getExternalRelations(): array
     {
         return ['client', 'creator'];
     }
 
-    /**
-     * @return mixed
-     */
     public function client()
     {
         return $this->belongsTo(Client::class);
     }
 
-    /**
-     * @return mixed
-     */
     public function creator()
     {
         return $this->belongsTo(User::class);

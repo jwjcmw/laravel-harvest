@@ -6,26 +6,17 @@ use Carbon\Carbon;
 
 class Client extends BaseEndpoint
 {
-    /**
-     * @return mixed
-     */
-    protected function getPath()
+    protected function getPath(): string
     {
         return 'clients';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getModel()
+    public function getModel(): string
     {
         return \Byte5\LaravelHarvest\Models\Client::class;
     }
 
-    /**
-     * @param $dateTime
-     */
-    public function updatedSince($dateTime)
+    public function updatedSince(Carbon|string $dateTime): void
     {
         if (! $dateTime instanceof Carbon) {
             $dateTime = Carbon::parse($dateTime);

@@ -4,18 +4,12 @@ namespace Byte5\LaravelHarvest\Endpoints;
 
 class InvoiceItemCategory extends BaseEndpoint
 {
-    /**
-     * @return mixed
-     */
-    protected function getPath()
+    protected function getPath(): string
     {
         return 'invoice_item_categories';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getModel()
+    public function getModel(): string
     {
         return \Byte5\LaravelHarvest\Models\InvoiceItemCategory::class;
     }

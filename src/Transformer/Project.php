@@ -4,14 +4,12 @@ namespace Byte5\LaravelHarvest\Transformer;
 
 use Byte5\LaravelHarvest\Contracts\Transformer;
 use Byte5\LaravelHarvest\Models\Project as ProjectModel;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class Project implements Transformer
 {
-    /**
-     * @param $data
-     * @return mixed
-     */
-    public function transformModelAttributes($data)
+    public function transformModelAttributes(array $data): Model
     {
         $project = new ProjectModel;
 
@@ -40,7 +38,7 @@ class Project implements Transformer
         $project->ends_on = $data['ends_on'];
         $project->over_budget_notification_date = $data['over_budget_notification_date'];
 
-        $project->external_client_id = \Illuminate\Support\Arr::get($data, 'client.id');
+        $project->external_client_id = Arr::get($data, 'client.id');
 
         return $project;
     }

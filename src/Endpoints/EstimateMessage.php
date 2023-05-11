@@ -4,27 +4,17 @@ namespace Byte5\LaravelHarvest\Endpoints;
 
 class EstimateMessage extends BaseEndpoint
 {
-    /**
-     * @return mixed
-     */
-    protected function getPath()
+    protected function getPath(): string
     {
         return 'estimates/{estimate_ID}/messages';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getModel()
+    public function getModel(): string
     {
         return \Byte5\LaravelHarvest\Models\EstimateMessage::class;
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function fromEstimate($id)
+    public function fromEstimate(int $id): void
     {
         $this->baseId = $id;
     }

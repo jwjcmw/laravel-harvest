@@ -9,30 +9,15 @@ class UserAssignment extends Model
 {
     use HasExternalRelations;
 
-    /**
-     * @var array
-     */
     protected $casts = [
         'is_active' => 'boolean',
         'is_project_manager' => 'boolean',
     ];
-
-    /**
-     * @var array
-     */
     protected $dates = ['created_at', 'updated_at'];
-
-    /**
-     * @var array
-     */
     protected $fillable = [
         'external_id', 'user_id', 'is_active', 'is_project_manager', 'hourly_rate', 'budget',
     ];
 
-    /**
-     * UserAssignment constructor.
-     * @param array $attributes
-     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -42,25 +27,16 @@ class UserAssignment extends Model
         );
     }
 
-    /**
-     * @return array
-     */
-    protected function getExternalRelations()
+    protected function getExternalRelations(): array
     {
         return ['user'];
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function expenses()
     {
         return $this->hasMany(Expense::class);
     }
 
-    /**
-     * @return mixed
-     */
     public function user()
     {
         return $this->belongsTo(User::class);

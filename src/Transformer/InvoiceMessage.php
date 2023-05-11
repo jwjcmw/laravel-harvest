@@ -4,14 +4,11 @@ namespace Byte5\LaravelHarvest\Transformer;
 
 use Byte5\LaravelHarvest\Contracts\Transformer;
 use Byte5\LaravelHarvest\Models\InvoiceMessage as InvoiceMessageModel;
+use Illuminate\Database\Eloquent\Model;
 
 class InvoiceMessage implements Transformer
 {
-    /**
-     * @param $data
-     * @return mixed
-     */
-    public function transformModelAttributes($data)
+    public function transformModelAttributes(array $data): Model
     {
         $invoiceMessage = new InvoiceMessageModel;
 

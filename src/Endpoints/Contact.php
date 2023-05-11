@@ -6,34 +6,22 @@ use Carbon\Carbon;
 
 class Contact extends BaseEndpoint
 {
-    /**
-     * @return mixed
-     */
-    protected function getPath()
+    protected function getPath(): string
     {
         return 'contacts';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getModel()
+    public function getModel(): string
     {
         return \Byte5\LaravelHarvest\Models\Contact::class;
     }
 
-    /**
-     * @param $id
-     */
-    public function client($id)
+    public function client(int $id): void
     {
         $this->params += ['client_id' => $id];
     }
 
-    /**
-     * @param $dateTime
-     */
-    public function updatedSince($dateTime)
+    public function updatedSince(string|Carbon $dateTime): void
     {
         if (! $dateTime instanceof Carbon) {
             $dateTime = Carbon::parse($dateTime);

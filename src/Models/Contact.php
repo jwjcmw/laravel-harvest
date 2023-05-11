@@ -9,23 +9,12 @@ class Contact extends Model
 {
     use HasExternalRelations;
 
-    /**
-     * @var array
-     */
     protected $dates = ['created_at', 'updated_at'];
-
-    /**
-     * @var array
-     */
     protected $fillable = [
         'external_id', 'title', 'first_name', 'last_name', 'email',
         'phone_office', 'phone_mobile', 'fax', 'client_id',
     ];
 
-    /**
-     * Contact constructor.
-     * @param array $attributes
-     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -35,10 +24,7 @@ class Contact extends Model
         );
     }
 
-    /**
-     * @return array
-     */
-    protected function getExternalRelations()
+    protected function getExternalRelations(): array
     {
         return ['client'];
     }

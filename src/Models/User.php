@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
-    /**
-     * @var array
-     */
     protected $casts = [
         'roles' => 'array',
         'has_access_to_all_future_projects' => 'boolean',
@@ -20,15 +17,7 @@ class User extends Model
         'can_create_invoices' => 'boolean',
         'is_active' => 'boolean',
     ];
-
-    /**
-     * @var array
-     */
     protected $dates = ['created_at', 'updated_at'];
-
-    /**
-     * @var array
-     */
     protected $fillable = [
         'external_id', 'first_name', 'last_name', 'email', 'telephone', 'timezone',
         'has_access_to_all_future_projects', 'is_contractor', 'is_admin',
@@ -37,10 +26,6 @@ class User extends Model
         'cost_rate', 'roles', 'avatar_url',
     ];
 
-    /**
-     * User constructor.
-     * @param array $attributes
-     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -50,33 +35,21 @@ class User extends Model
         );
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function expenses()
     {
         return $this->hasMany(Expense::class, 'user_id');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function invoices()
     {
         return $this->hasMany(Invoice::class, 'user_id');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function timeEntries()
     {
         return $this->hasMany(TimeEntry::class, 'user_id');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function assignments()
     {
         return $this->hasMany(UserAssignment::class, 'user_id');

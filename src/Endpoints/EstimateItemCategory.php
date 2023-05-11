@@ -4,10 +4,7 @@ namespace Byte5\LaravelHarvest\Endpoints;
 
 class EstimateItemCategory extends BaseEndpoint
 {
-    /**
-     * @return mixed
-     */
-    protected function getPath()
+    protected function getPath(): string
     {
         return 'estimate_item_categories';
     }
@@ -15,7 +12,7 @@ class EstimateItemCategory extends BaseEndpoint
     /**
      * @return mixed
      */
-    public function getModel()
+    public function getModel(): string
     {
         return \Byte5\LaravelHarvest\Models\EstimateItemCategory::class;
     }

@@ -4,14 +4,12 @@ namespace Byte5\LaravelHarvest\Transformer;
 
 use Byte5\LaravelHarvest\Contracts\Transformer;
 use Byte5\LaravelHarvest\Models\Invoice as InvoiceModel;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class Invoice implements Transformer
 {
-    /**
-     * @param $data
-     * @return mixed
-     */
-    public function transformModelAttributes($data)
+    public function transformModelAttributes(array $data): Model
     {
         $invoice = new InvoiceModel;
 
@@ -45,9 +43,9 @@ class Invoice implements Transformer
         $invoice->paid_at = $data['paid_at'];
         $invoice->closed_at = $data['closed_at'];
 
-        $invoice->external_client_id = \Illuminate\Support\Arr::get($data, 'client.id');
-        $invoice->external_creator_id = \Illuminate\Support\Arr::get($data, 'creator.id');
-        $invoice->external_estimate_id = \Illuminate\Support\Arr::get($data, 'estimate.id');
+        $invoice->external_client_id = Arr::get($data, 'client.id');
+        $invoice->external_creator_id = Arr::get($data, 'creator.id');
+        $invoice->external_estimate_id = Arr::get($data, 'estimate.id');
 
         return $invoice;
     }

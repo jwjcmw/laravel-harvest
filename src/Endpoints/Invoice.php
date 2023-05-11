@@ -6,50 +6,37 @@ use Carbon\Carbon;
 
 class Invoice extends BaseEndpoint
 {
-    /**
-     * @return mixed
-     */
-    protected function getPath()
+    protected function getPath(): string
     {
         return 'invoices';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getModel()
+    public function getModel(): string
     {
         return \Byte5\LaravelHarvest\Models\Invoice::class;
     }
 
-    /**
-     * @param $id
-     */
-    public function client($id)
+    public function client(int $id): void
     {
         $this->params += ['client_id' => $id];
     }
 
-    /**
-     * @param $id
-     */
-    public function project($id)
+    public function project(int $id): void
     {
         $this->params += ['project_id' => $id];
     }
 
-    /**
-     * @param $state
-     */
-    public function state($state)
+    public function state(string $state): void
     {
-        $this->params += ['state' => $state];
+        $this->params += ['state' => match($state) {
+            'draft' => 'draft',
+            'open' => 'open',
+            'paid' => 'paid',
+            'closed' => 'closed'
+        }];
     }
 
-    /**
-     * @param $dateTime
-     */
-    public function updatedSince($dateTime)
+    public function updatedSince(string|Carbon $dateTime): void
     {
         if (! $dateTime instanceof Carbon) {
             $dateTime = Carbon::parse($dateTime);
@@ -58,10 +45,7 @@ class Invoice extends BaseEndpoint
         $this->params += ['updated_since' => $dateTime->toIso8601ZuluString()];
     }
 
-    /**
-     * @param $date
-     */
-    public function from($date)
+    public function from(string|Carbon $date): void
     {
         if (! $date instanceof Carbon) {
             $date = Carbon::parse($date);
@@ -70,10 +54,7 @@ class Invoice extends BaseEndpoint
         $this->params += ['from' => $date->format('Y-m-d')];
     }
 
-    /**
-     * @param $date
-     */
-    public function to($date)
+    public function to(string|Carbon $date): void
     {
         if (! $date instanceof Carbon) {
             $date = Carbon::parse($date);

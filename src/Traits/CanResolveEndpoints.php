@@ -2,61 +2,22 @@
 
 namespace Byte5\LaravelHarvest\Traits;
 
+use Byte5\LaravelHarvest\Endpoints\BaseEndpoint;
+use Illuminate\Support\Str;
+
 trait CanResolveEndpoints
 {
     /**
      * Resolve Endpoint name to endpoint class instance.
-     *
-     * @param $name
-     * @return mixed
      */
-    protected function resolveEndpoint($name)
+    protected function resolveEndpoint(string $name): BaseEndpoint
     {
-        $endpointClass = 'Byte5\LaravelHarvest\Endpoints\\'.$this->getEndpointName($name);
+        $endpointClass = '\\Byte5\\LaravelHarvest\\Endpoints\\' . Str::singular(Str::ucfirst($name));
 
-        if (! class_exists($endpointClass)) {
-            throw new \RuntimeException("Endpoint $name does not exist!");
+        if (! is_a($endpointClass, BaseEndpoint::class, true)) {
+            throw new \RuntimeException("Endpoint {$endpointClass} does not exist!");
         }
 
         return new $endpointClass;
     }
-
-    /**
-     * Get Endpoint name.
-     *
-     * @param $name
-     * @return mixed
-     */
-    private function getEndpointName($name)
-    {
-        return collect($this->availableEndpoints)->filter(function ($endpoint) use ($name) {
-            return \Illuminate\Support\Str::singular(ucfirst($name)) == $endpoint;
-        })->first();
-    }
-
-    /**
-     * @var array
-     */
-    protected $availableEndpoints = [
-        'Client',
-        'Contact',
-        'Company',
-        'EstimateMessage',
-        'EstimateItemCategory',
-        'Estimate',
-        'ExpenseCategory',
-        'Expense',
-        'InvoiceItemCategory',
-        'InvoiceMessage',
-        'InvoicePayment',
-        'Invoice',
-        'ProjectAssignment',
-        'Project',
-        'Role',
-        'TaskAssignment',
-        'Task',
-        'TimeEntry',
-        'UserAssignment',
-        'User',
-    ];
 }

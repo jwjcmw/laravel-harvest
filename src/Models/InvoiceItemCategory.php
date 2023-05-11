@@ -6,30 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class InvoiceItemCategory extends Model
 {
-    /**
-     * @var array
-     */
     protected $casts = [
         'use_as_service' => 'boolean',
         'use_as_expense' => 'boolean',
     ];
-
-    /**
-     * @var array
-     */
     protected $dates = ['created_at', 'updated_at'];
-
-    /**
-     * @var array
-     */
     protected $fillable = [
         'external_id', 'name', 'use_as_expense', 'use_as_service',
     ];
 
-    /**
-     * InvoiceItemCategory constructor.
-     * @param array $attributes
-     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

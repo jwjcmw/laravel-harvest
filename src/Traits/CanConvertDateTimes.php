@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 trait CanConvertDateTimes
 {
-    protected $carbonParseable = [
+    protected array $carbonParseable = [
         'accepted_at',
         'closed_at',
         'created_at',
@@ -28,24 +28,26 @@ trait CanConvertDateTimes
 
     /**
      * Converts all known datetime fields into Carbon instances.
-     *
-     * @param $data
-     * @return Illuminate\Support\Collection
      */
-    protected function convertDateTimes($data)
+    protected function convertDateTimes(array $data): Collection
     {
         if (! $data instanceof Collection) {
             $data = collect($data);
         }
 
-        return $data->map(function ($item) {
-            foreach ($this->carbonParseable as $parseable) {
-                if (\Illuminate\Support\Arr::has($item, $parseable) && $item[$parseable] != null) {
-                    $item[$parseable] = Carbon::parse($item[$parseable]);
-                }
-            }
-
-            return $item;
-        });
+        $carbonParseable = $this->carbonParseable;
+        return $data->map(
+            static fn ($item) =>
+                array_combine(
+                    $keys = array_keys($item),
+                    array_map(
+                        static fn($el, $key) => null !== $el && in_array($key, $carbonParseable, true) ?
+                            Carbon::parse($el)
+                            : $el,
+                        $item,
+                        $keys
+                    )
+                )
+        );
     }
 }

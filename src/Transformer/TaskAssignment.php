@@ -4,14 +4,12 @@ namespace Byte5\LaravelHarvest\Transformer;
 
 use Byte5\LaravelHarvest\Contracts\Transformer;
 use Byte5\LaravelHarvest\Models\TaskAssignment as TaskAssignmentModel;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class TaskAssignment implements Transformer
 {
-    /**
-     * @param $data
-     * @return mixed
-     */
-    public function transformModelAttributes($data)
+    public function transformModelAttributes(array $data): Model
     {
         $taskAssignment = new TaskAssignmentModel;
 
@@ -24,7 +22,7 @@ class TaskAssignment implements Transformer
         $taskAssignment->hourly_rate = $data['hourly_rate'];
         $taskAssignment->budget = $data['budget'];
 
-        $taskAssignment->external_task_id = \Illuminate\Support\Arr::get($data, 'task.id');
+        $taskAssignment->external_task_id = Arr::get($data, 'task.id');
 
         return $taskAssignment;
     }

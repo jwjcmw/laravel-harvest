@@ -4,10 +4,7 @@ namespace Byte5\LaravelHarvest\Endpoints;
 
 class UserAssignment extends BaseEndpoint
 {
-    /**
-     * @return mixed
-     */
-    protected function getPath()
+    protected function getPath(): string
     {
         return 'projects/{id}/user_assignments';
     }
@@ -15,16 +12,12 @@ class UserAssignment extends BaseEndpoint
     /**
      * @return mixed
      */
-    public function getModel()
+    public function getModel(): string
     {
         return \Byte5\LaravelHarvest\Models\UserAssignment::class;
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function fromProject($id)
+    public function fromProject(int $id): void
     {
         $this->baseId = $id;
     }

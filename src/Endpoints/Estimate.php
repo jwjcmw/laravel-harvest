@@ -4,18 +4,12 @@ namespace Byte5\LaravelHarvest\Endpoints;
 
 class Estimate extends BaseEndpoint
 {
-    /**
-     * @return mixed
-     */
-    protected function getPath()
+    protected function getPath(): string
     {
         return 'estimates';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getModel()
+    public function getModel(): string
     {
         return \Byte5\LaravelHarvest\Models\Estimate::class;
     }

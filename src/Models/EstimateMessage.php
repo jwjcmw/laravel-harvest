@@ -6,32 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class EstimateMessage extends Model
 {
-    /**
-     * @var array
-     */
     protected $casts = [
         'recipients' => 'array',
         'send_me_a_copy' => 'boolean',
         'event_type' => 'boolean',
     ];
-
-    /**
-     * @var array
-     */
     protected $dates = ['created_at', 'updated_at'];
-
-    /**
-     * @var array
-     */
     protected $fillable = [
         'external_id', 'sent_by', 'sent_by_email', 'sent_from', 'recipients',
         'subject', 'body', 'send_me_a_copy', 'event_type',
     ];
 
-    /**
-     * EstimateMessage constructor.
-     * @param array $attributes
-     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

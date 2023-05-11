@@ -6,26 +6,17 @@ use Carbon\Carbon;
 
 class TimeEntry extends BaseEndpoint
 {
-    /**
-     * @return mixed
-     */
-    protected function getPath()
+    protected function getPath(): string
     {
         return 'time_entries';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getModel()
+    public function getModel(): string
     {
         return \Byte5\LaravelHarvest\Models\TimeEntry::class;
     }
 
-    /**
-     * @param $date
-     */
-    public function from($date)
+    public function from(string|Carbon $date): void
     {
         if (! $date instanceof Carbon) {
             $date = Carbon::parse($date);
@@ -34,10 +25,7 @@ class TimeEntry extends BaseEndpoint
         $this->params += ['from' => $date->format('Y-m-d')];
     }
 
-    /**
-     * @param $date
-     */
-    public function to($date)
+    public function to(string|Carbon $date): void
     {
         if (! $date instanceof Carbon) {
             $date = Carbon::parse($date);
@@ -46,10 +34,7 @@ class TimeEntry extends BaseEndpoint
         $this->params += ['to' => $date->format('Y-m-d')];
     }
 
-    /**
-     * @param $date
-     */
-    public function updatedSince($date)
+    public function updatedSince(string|Carbon $date): void
     {
         if (! $date instanceof Carbon) {
             $date = Carbon::parse($date);
@@ -58,12 +43,9 @@ class TimeEntry extends BaseEndpoint
         $this->params += ['updated_since' => $date->format('Y-m-d')];
     }
 
-    /**
-     * @param $isBilled
-     */
-    public function isBilled(bool $isBilled)
+    public function isBilled(bool $isBilled): void
     {
-        $this->params += ['is_billed' => $isBilled];
+        $this->params += ['is_billed' => $isBilled ? 'true' : 'false'];
     }
 
     /**

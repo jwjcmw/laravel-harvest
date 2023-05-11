@@ -4,14 +4,11 @@ namespace Byte5\LaravelHarvest\Transformer;
 
 use Byte5\LaravelHarvest\Contracts\Transformer;
 use Byte5\LaravelHarvest\Models\ExpenseCategory as ExpenseCategoryModel;
+use Illuminate\Database\Eloquent\Model;
 
 class ExpenseCategory implements Transformer
 {
-    /**
-     * @param $data
-     * @return mixed
-     */
-    public function transformModelAttributes($data)
+    public function transformModelAttributes(array $data): Model
     {
         $expenseCategory = new ExpenseCategoryModel;
 

@@ -2,103 +2,62 @@
 
 namespace Byte5\LaravelHarvest\Traits;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+
 trait HasExternalRelations
 {
-    /**
-     * @return array
-     */
-    abstract protected function getExternalRelations() : array;
+    abstract protected function getExternalRelations(): array;
 
-    /**
-     * Loads relations from harvest api external relationships.
-     *
-     * @param  array|string $relations
-     * @param bool $save
-     * @return $this
-     */
-    public function loadExternal($relations = '*', $save = true)
+    public function loadExternal(array|string $relations = '*', bool $save = true): static
     {
         // normalize input
         if ($relations === '*') {
             $relations = $this->getExternalRelations();
         }
 
-        if (is_string($relations)) {
-            $relations = [$relations];
-        }
-
-        $relations = $this->filterRelations($relations);
-
-        $this->mapRelations($relations, $save);
+        $this->mapRelations(
+            $this->filterRelations(
+                (array)$relations
+            ),
+            $save
+        );
 
         return $this;
     }
 
-    /**
-     * Only return relevant relations.
-     *
-     * @param $relations
-     * @return Illuminate\Support\Collection
-     */
-    private function filterRelations($relations)
+    private function filterRelations(array $relations): Collection
     {
-        return collect($relations)->filter(function ($relation) {
-            return $this->relationExists($relation)
-                && $this->externalRelationIdExists($relation)
-                && $this->relationHasNotBeenEstablished($relation);
-        });
+        return collect($relations)->filter(fn($relation) =>
+                $this->relationExists($relation)
+                && $this->relationHasNotBeenEstablished($relation)
+        );
     }
 
-    /**
-     * Checks if the relation does exist in the external relations array.
-     *
-     * @param $relation
-     * @return bool
-     */
-    private function relationExists($relation)
+    private function relationExists(string $relation): bool
     {
-        return in_array($relation, $this->getExternalRelations()) || \Illuminate\Support\Arr::has($this->getExternalRelations(), $relation);
+        $externalRelations = $this->getExternalRelations();
+        return in_array($relation, $externalRelations, true) || Arr::has($externalRelations, $relation);
     }
 
-    /**
-     * Checks if the external relation id exists.
-     *
-     * @param $relation
-     * @return bool
-     */
-    private function externalRelationIdExists($relation)
+    private function relationHasNotBeenEstablished(string $relation): bool
     {
-        return $this->{'external_'.snake_case($relation).'_id'} != null;
+        return null === $this->{$relation} || null === $this->{'external_' . Str::snake($relation) . '_id'};
     }
 
-    /**
-     * Checks if the relation has already been established.
-     *
-     * @param $relation
-     * @return bool
-     */
-    private function relationHasNotBeenEstablished($relation)
-    {
-        return ! $this->{$relation} || $this->{snake_case($relation).'_id'} == null;
-    }
-
-    /**
-     * Maps given relations with their models.
-     *
-     * @param $relations
-     * @param $save
-     */
-    private function mapRelations($relations, $save)
+    private function mapRelations(Collection $relations, bool $save = false): void
     {
         $relations->each(function ($relation) use ($save) {
-            $relationId = $this->{'external_'.snake_case($relation).'_id'};
+            $relationId = $this->{'external_' . Str::snake($relation) . '_id'};
+
             $relationKey = $this->getRelationKey($relation);
 
             if ($existingModel = $this->checkForLocalExistence($relationKey, $relationId)) {
                 return $this->$relationKey()->associate($existingModel);
             }
 
-            $relationModel = call_user_func('Harvest::'.$relationKey)
+            $relationModel = call_user_func('Harvest::' . $relationKey)
                                 ->find($relationId)
                                 ->toCollection()
                                 ->first();
@@ -113,31 +72,24 @@ trait HasExternalRelations
 
     /**
      * Checks for the local existence of the model via external_id.
-     *
-     * @param $modelKey
-     * @param $id
-     * @return Model
      */
-    private function checkForLocalExistence($modelKey, $id)
+    private function checkForLocalExistence(string $modelKey, int $id): ?Model
     {
         if (! config('harvest.uses_database')) {
-            return;
+            return null;
         }
 
-        $modelMethod = '\Byte5\LaravelHarvest\Models\\'.ucfirst(camel_case($modelKey)).'::whereExternalId';
-
-        return call_user_func($modelMethod, $id)->first();
+        $modelMethod = '\\Byte5\\LaravelHarvest\\Models\\' . Str::ucfirst(Str::camel($modelKey)) . '::whereExternalId';
+        return $modelMethod($id)->first();
     }
 
     /**
      * Returns the key of the passed in relation.
-     *
-     * @param $relation
-     * @return string
      */
-    private function getRelationKey($relation)
+    private function getRelationKey(string $relation): string
     {
-        return in_array($relation, $this->getExternalRelations())
-            ? $relation : $this->getExternalRelations()[$relation];
+        $externalRelations = $this->getExternalRelations();
+        return in_array($relation, $externalRelations, true)
+            ? $relation : $externalRelations[$relation];
     }
 }

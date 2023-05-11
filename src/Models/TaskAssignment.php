@@ -9,30 +9,15 @@ class TaskAssignment extends Model
 {
     use HasExternalRelations;
 
-    /**
-     * @var array
-     */
     protected $casts = [
         'is_active' => 'boolean',
         'billable' => 'boolean',
     ];
-
-    /**
-     * @var array
-     */
     protected $dates = ['created_at', 'updated_at'];
-
-    /**
-     * @var array
-     */
     protected $fillable = [
         'external_id', 'task_id', 'is_active', 'hourly_rate', 'budget',
     ];
 
-    /**
-     * TaskAssignment constructor.
-     * @param array $attributes
-     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -42,17 +27,11 @@ class TaskAssignment extends Model
         );
     }
 
-    /**
-     * @return array
-     */
-    protected function getExternalRelations()
+    protected function getExternalRelations(): array
     {
         return ['task'];
     }
 
-    /**
-     * @return mixed
-     */
     public function task()
     {
         return $this->belongsTo(Task::class);

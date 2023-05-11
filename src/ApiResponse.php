@@ -3,54 +3,41 @@
 namespace Byte5\LaravelHarvest;
 
 use Byte5\LaravelHarvest\Traits\CanConvertDateTimes;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
+use function json_decode;
 
 class ApiResponse
 {
     use CanConvertDateTimes;
 
-    /**
-     * @var
-     */
-    protected $data;
-
-    /**
-     * @var
-     */
-    protected $jsonResult;
-
-    /**
-     * @var Model
-     */
-    protected $model;
+    protected mixed $jsonResult;
 
     /**
      * ApiResult constructor.
-     * @param $data
-     * @param $modelName
      */
-    public function __construct($data, $modelName)
-    {
-        $this->data = $data;
-        $this->jsonResult = $this->data->json();
-        $this->model = $modelName;
+    public function __construct(
+        protected ResponseInterface $data,
+        protected string $model
+    ) {
+        $this->jsonResult = json_decode($data->getBody(), true);
     }
 
     /**
      * Transform results to json.
-     *
-     * @return mixed
      */
-    public function toJson()
+    public function toJson(): mixed
     {
         return $this->jsonResult;
     }
 
     /**
      * Transforms results into collection.
-     *
-     * @return \Illuminate\Support\Collection
      */
-    public function toCollection()
+    public function toCollection(): Collection
     {
         if (! array_key_exists('total_entries', $this->jsonResult)) {
             return $this->transformToModel([$this->jsonResult]);
@@ -73,68 +60,58 @@ class ApiResponse
 
     /**
      * Go to next page of json result.
-     *
-     * @return ApiResponse
      */
-    public function next()
+    public function next(): ApiResponse
     {
         if (! $this->hasNextPage()) {
-            throw new \RuntimeException('The result does not have a next page!');
+            throw new RuntimeException('The result does not have a next page!');
         }
 
         return new self(
-            (new ApiGateway())->execute(\Illuminate\Support\Arr::get($this->jsonResult, 'links.next')),
+            (new ApiGateway())->execute(Arr::get($this->jsonResult, 'links.next')),
             $this->model
         );
     }
 
     /**
      * Go to previous page of json result.
-     *
-     * @return ApiResponse
      */
-    public function previous()
+    public function previous(): ApiResponse
     {
         if (! $this->hasPreviousPage()) {
-            throw new \RuntimeException('The result does not have a previous page!');
+            throw new RuntimeException('The result does not have a previous page!');
         }
 
         return new self(
-            (new ApiGateway())->execute(\Illuminate\Support\Arr::get($this->jsonResult, 'links.previous')),
+            (new ApiGateway())->execute(Arr::get($this->jsonResult, 'links.previous')),
             $this->model
         );
     }
 
-    public function hasNextPage()
+    public function hasNextPage(): bool
     {
-        return \Illuminate\Support\Arr::get($this->jsonResult, 'links.next') != null;
+        return Arr::get($this->jsonResult, 'links.next') !== null;
     }
 
-    public function hasPreviousPage()
+    public function hasPreviousPage(): bool
     {
-        return \Illuminate\Support\Arr::get($this->jsonResult, 'links.previous') != null;
+        return Arr::get($this->jsonResult, 'links.previous') !== null;
     }
 
-    /**
-     * @param $data
-     * @return mixed
-     */
-    private function transformToModel($data)
+    private function transformToModel(array $data): Collection
     {
-        return $this->convertDateTimes($data)->map(function ($data) {
-            $transformerName = '\Byte5\LaravelHarvest\Transformer\\'.class_basename($this->model);
+        return $this->convertDateTimes($data)
+            ->map(function ($data) {
+            $transformerName = '\\Byte5\\LaravelHarvest\\Transformer\\' . class_basename($this->model);
 
             return (new $transformerName)->transformModelAttributes($data);
         });
     }
 
-    /**
-     * Get results key.
-     */
-    private function getResultsKey()
+    private function getResultsKey(): string
     {
-        return \Illuminate\Support\Str::snake(
-            \Illuminate\Support\Str::plural(
+        return Str::snake(
+            Str::plural(
                 class_basename($this->model)
             )
         );

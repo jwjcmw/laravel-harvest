@@ -2,11 +2,9 @@
 
 namespace Byte5\LaravelHarvest\Contracts;
 
+use Illuminate\Database\Eloquent\Model;
+
 interface Transformer
 {
-    /**
-     * @param $someModel
-     * @return mixed
-     */
-    public function transformModelAttributes($someModel);
+    public function transformModelAttributes(array $data): Model;
 }

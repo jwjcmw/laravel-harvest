@@ -4,14 +4,12 @@ namespace Byte5\LaravelHarvest\Transformer;
 
 use Byte5\LaravelHarvest\Models\Estimate as EstimateModel;
 use Byte5\LaravelHarvest\Contracts\Transformer as TransformerContract;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class Estimate implements TransformerContract
 {
-    /**
-     * @param $data
-     * @return mixed
-     */
-    public function transformModelAttributes($data)
+    public function transformModelAttributes(array $data): Model
     {
         $estimate = new EstimateModel;
 
@@ -38,10 +36,9 @@ class Estimate implements TransformerContract
         $estimate->sent_at = $data['sent_at'];
         $estimate->accepted_at = $data['accepted_at'];
         $estimate->declined_at = $data['declined_at'];
-        $estimate->discount_amount = $data['discount_amount'];
 
-        $estimate->external_client_id = \Illuminate\Support\Arr::get($data, 'client.id');
-        $estimate->external_creator_id = \Illuminate\Support\Arr::get($data, 'creator.id');
+        $estimate->external_client_id = Arr::get($data, 'client.id');
+        $estimate->external_creator_id = Arr::get($data, 'creator.id');
 
         return $estimate;
     }

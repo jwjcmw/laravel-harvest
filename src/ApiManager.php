@@ -2,35 +2,20 @@
 
 namespace Byte5\LaravelHarvest;
 
+use Byte5\LaravelHarvest\Endpoints\BaseEndpoint;
 use Byte5\LaravelHarvest\Traits\CanResolveEndpoints;
 
 class ApiManager
 {
     use CanResolveEndpoints;
 
-    /**
-     * @var
-     */
-    protected $endpoint;
+    protected ?BaseEndpoint $endpoint = null;
 
-    /**
-     * @var ApiGateway
-     */
-    protected $gateway;
+    public function __construct(
+        protected ApiGateway $gateway
+    ) {}
 
-    /**
-     * ApiManager constructor.
-     * @param ApiGateway $gateway
-     */
-    public function __construct(ApiGateway $gateway)
-    {
-        $this->gateway = $gateway;
-    }
-
-    /**
-     * @param $name
-     */
-    protected function setEndpoint($name)
+    protected function setEndpoint(string $name): void
     {
         $this->endpoint = $this->resolveEndpoint($name);
     }
@@ -46,15 +31,8 @@ class ApiManager
         return $this;
     }
 
-    /**
-     * @param $name
-     * @param $arguments
-     * @return ApiManager|ApiResponse
-     */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
-        $apiCall = null;
-
         if ($this->isStaticCall() && ! $this->endpoint) {
             $this->setEndpoint($name);
 
@@ -66,31 +44,19 @@ class ApiManager
         }
 
         $url = call_user_func_array([$this->endpoint, $name], $arguments);
-
-        if ($url == null) {
+        if (null === $url) {
             return $this;
         }
 
-        return tap($this->craftResponse($url), function () {
-            $this->clearEndpoint();
-        });
+        return tap($this->craftResponse($url), $this->clearEndpoint(...));
     }
 
-    /**
-     * Sets current endpoint to null.
-     */
-    protected function clearEndpoint()
+    protected function clearEndpoint(): void
     {
         $this->endpoint = null;
     }
 
-    /**
-     * Crafts ApiResponse.
-     *
-     * @param $url
-     * @return ApiResponse
-     */
-    protected function craftResponse($url)
+    protected function craftResponse($url): ApiResponse
     {
         return new ApiResponse($this->gateway->execute($url), $this->endpoint->getModel());
     }

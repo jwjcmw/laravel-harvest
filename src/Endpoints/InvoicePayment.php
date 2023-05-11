@@ -4,27 +4,17 @@ namespace Byte5\LaravelHarvest\Endpoints;
 
 class InvoicePayment extends BaseEndpoint
 {
-    /**
-     * @return mixed
-     */
-    protected function getPath()
+    protected function getPath(): string
     {
         return 'invoices/{INVOICE_ID}/payments';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getModel()
+    public function getModel(): string
     {
         return \Byte5\LaravelHarvest\Models\InvoicePayment::class;
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function fromInvoice($id)
+    public function fromInvoice(int $id): void
     {
         $this->baseId = $id;
     }

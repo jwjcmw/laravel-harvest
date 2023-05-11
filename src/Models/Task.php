@@ -6,32 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    /**
-     * @var array
-     */
     protected $casts = [
         'billable_by_default' => 'boolean',
         'is_default' => 'boolean',
         'is_active' => 'boolean',
     ];
-
-    /**
-     * @var array
-     */
     protected $dates = ['created_at', 'updated_at'];
-
-    /**
-     * @var array
-     */
     protected $fillable = [
         'external_id', 'name', 'billable_by_default', 'default_hourly_rate',
         'is_default', 'is_active',
     ];
 
-    /**
-     * Task constructor.
-     * @param array $attributes
-     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -41,9 +26,6 @@ class Task extends Model
         );
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function timeEntries()
     {
         return $this->hasMany(TimeEntry::class);

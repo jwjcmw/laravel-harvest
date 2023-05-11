@@ -9,9 +9,6 @@ class Project extends Model
 {
     use HasExternalRelations;
 
-    /**
-     * @var array
-     */
     protected $casts = [
         'is_active' => 'boolean',
         'is_billable' => 'boolean',
@@ -20,17 +17,9 @@ class Project extends Model
         'show_budget_to_all' => 'boolean',
         'cost_budget_include_expenses' => 'boolean',
     ];
-
-    /**
-     * @var array
-     */
     protected $dates = [
         'created_at', 'updated_at', 'over_budget_notification_date', 'starts_on', 'ends_on',
     ];
-
-    /**
-     * @var array
-     */
     protected $fillable = [
         'external_id', 'client_id', 'name', 'code', 'is_active', 'is_billable',
         'is_fixed_fee', 'bill_by', 'hourly_rate', 'budget', 'budget_by',
@@ -39,10 +28,6 @@ class Project extends Model
         'fee', 'notes', 'starts_on', 'ends_on', 'over_budget_notification_date',
     ];
 
-    /**
-     * Project constructor.
-     * @param array $attributes
-     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -52,55 +37,36 @@ class Project extends Model
         );
     }
 
-    /**
-     * @return array
-     */
-    protected function getExternalRelations()
+    protected function getExternalRelations(): array
     {
         return ['client'];
     }
 
-    /**
-     * @return mixed
-     */
     public function client()
     {
         return $this->belongsTo(Client::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function expenses()
     {
         return $this->hasMany(Expense::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function timeEntries()
     {
         return $this->hasMany(TimeEntry::class);
     }
 
-    /**
-     * Get spent hours on project.
-     * @return int
-     */
     public function getHoursAttribute()
     {
         return $this->timeEntries->sum('hours');
     }
 
-    /**
-     * Get project's income.
-     * @return int
-     */
     public function getIncomeAttribute()
     {
-        return $this->expenses->reduce(function ($carry, $item) {
-            return $carry + $item->invoice->sum('amount');
-        });
+        return $this->expenses->reduce(
+            static fn ($carry, $item) => $carry + $item->invoice->sum('amount'),
+            0
+        );
     }
 }

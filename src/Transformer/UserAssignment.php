@@ -4,14 +4,12 @@ namespace Byte5\LaravelHarvest\Transformer;
 
 use Byte5\LaravelHarvest\Contracts\Transformer;
 use Byte5\LaravelHarvest\Models\UserAssignment as UserAssignmentModel;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class UserAssignment implements Transformer
 {
-    /**
-     * @param $data
-     * @return mixed
-     */
-    public function transformModelAttributes($data)
+    public function transformModelAttributes(array $data): Model
     {
         $userAssignment = new UserAssignmentModel;
 
@@ -25,7 +23,7 @@ class UserAssignment implements Transformer
         $userAssignment->hourly_rate = $data['hourly_rate'];
         $userAssignment->budget = $data['budget'];
 
-        $userAssignment->external_user_id = \Illuminate\Support\Arr::get($data, 'user.id');
+        $userAssignment->external_user_id = Arr::get($data, 'user.id');
 
         return $userAssignment;
     }

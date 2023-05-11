@@ -4,140 +4,83 @@ namespace Byte5\LaravelHarvest\Endpoints;
 
 abstract class BaseEndpoint
 {
-    /**
-     * @var string
-     */
-    protected $apiV2Url = 'https://api.harvestapp.com/v2/';
+    protected string $apiV2Url = 'https://api.harvestapp.com/v2/';
+    protected int $baseId;
+    protected array $params = [];
 
     /**
      * @var
      */
-    protected $baseId;
+    protected string $url;
 
-    /**
-     * @var array
-     */
-    protected $params = [];
+    abstract protected function getPath(): string;
 
-    /**
-     * @var
-     */
-    protected $url;
+    abstract public function getModel(): string;
 
-    /**
-     * @return mixed
-     */
-    abstract protected function getPath();
-
-    /**
-     * @return mixed
-     */
-    abstract public function getModel();
-
-    /**
-     * @return mixed
-     */
-    public function get()
+    public function get(): array
     {
         $this->buildUrl();
-
         return ['url' => $this->getUrl()];
     }
 
-    /**
-     * @return mixed
-     */
-    public function create($data)
+    public function create(array $data): array
     {
         $this->buildUrl();
-
         return ['url' => $this->getUrl(), 'method' => 'POST', 'body' => $data];
     }
 
-    /**
-     * @return mixed
-     */
-    public function update($data, $id)
+    public function update(array $data, string $id): array
     {
-        $this->buildUrl('/'.$id);
-
+        $this->buildUrl('/' . $id);
         return ['url' => $this->getUrl(), 'method' => 'PATCH', 'body' => $data];
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function find($id)
+    public function find(string $id): string
     {
-        $this->buildUrl('/'.$id);
-
+        $this->buildUrl('/' . $id);
         return $this->getUrl();
     }
 
-    /**
-     * @param $subPath
-     */
-    protected function buildUrl($subPath = '')
+    protected function buildUrl(string $subPath = ''): void
     {
         $path = $this->replaceVarsInPath();
 
-        $fullPath = $this->apiV2Url.$path.$subPath;
-        $params = $this->getUrlParams();
+        $fullPath = $this->apiV2Url . $path . $subPath;
+        $params   = $this->getUrlParams();
 
-        $this->url = $fullPath.$params;
+        $this->url = $fullPath . $params;
     }
 
-    /**
-     * Get endpoint url.
-     *
-     * @return mixed
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrlParams()
+    public function getUrlParams(): string
     {
-        return count($this->params) ? '?'.http_build_query($this->params) : '';
+        return ! empty($this->params) ? '?' . http_build_query($this->params) : '';
     }
 
-    /**
-     * @param $limit
-     */
-    public function limit($limit)
+    public function limit(int $limit): void
     {
         $this->params += ['per_page' => $limit];
     }
 
-    /**
-     * @param $page
-     */
-    public function page($page)
+    public function page(int $page): void
     {
         $this->params += ['page' => $page];
     }
 
-    /**
-     * @param bool $active
-     */
-    public function active($active = true)
+    public function active(bool $active = true): void
     {
         $this->params += ['is_active' => $active ? 'true' : 'false'];
     }
 
-    /**
-     * @return mixed|null|string|string[]
-     */
-    private function replaceVarsInPath()
+    private function replaceVarsInPath(): string
     {
         $tmpPath = $this->getPath();
 
-        if (! $this->baseId || ! str_contains($tmpPath, '{')) {
+        if (! isset($this->baseId) || ! str_contains($tmpPath, '{')) {
             return $tmpPath;
         }
 

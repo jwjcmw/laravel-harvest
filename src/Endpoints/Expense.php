@@ -4,18 +4,12 @@ namespace Byte5\LaravelHarvest\Endpoints;
 
 class Expense extends BaseEndpoint
 {
-    /**
-     * @return mixed
-     */
-    protected function getPath()
+    protected function getPath(): string
     {
         return 'expenses';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getModel()
+    public function getModel(): string
     {
         return \Byte5\LaravelHarvest\Models\Expense::class;
     }
