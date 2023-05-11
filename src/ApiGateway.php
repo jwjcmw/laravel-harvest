@@ -25,7 +25,22 @@ class ApiGateway
             ]);
         }
 
-        if (is_array($path) && $path['method'] === 'POST') {
+        $path = (array)$path;
+
+        if (($path['method'] ?? 'GET') === 'DELETE') {
+            return $client->request('DELETE', $path['url'] ?? $path, [
+                'headers' => $headers
+            ]);
+        }
+
+        if (($path['method'] ?? 'GET') === 'PATCH') {
+            return $client->request('PATCH', $path['url'], [
+                'headers' => $headers,
+                'form_params' => $path['body']
+            ]);
+        }
+
+        if (($path['method'] ?? 'GET') === 'POST') {
             return $client->request('POST', $path['url'], [
                 'headers' => $headers,
                 'form_params' => $path['body']
