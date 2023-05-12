@@ -36,14 +36,14 @@ class ApiGateway
         if (($path['method'] ?? 'GET') === 'PATCH') {
             return $client->request('PATCH', $path['url'], [
                 'headers' => $headers,
-                'form_params' => $path['body']
+                'json' => $path['body']
             ]);
         }
 
         if (($path['method'] ?? 'GET') === 'POST') {
             return $client->request('POST', $path['url'], [
                 'headers' => $headers,
-                'form_params' => $path['body']
+                'json' => $path['body']
             ]);
         }
 
