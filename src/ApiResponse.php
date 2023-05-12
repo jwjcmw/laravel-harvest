@@ -2,7 +2,9 @@
 
 namespace Byte5\LaravelHarvest;
 
+use Byte5\LaravelHarvest\Contracts\Transformer as TransformerContract;
 use Byte5\LaravelHarvest\Traits\CanConvertDateTimes;
+use Byte5\LaravelHarvest\Transformer\OneOnOneTransformer;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -100,11 +102,22 @@ class ApiResponse
 
     private function transformToModel(array $data): Collection
     {
+        $model = $this->model;
+        $transformer = $this->getTransformer($model);
+
         return $this->convertDateTimes($data)
-            ->map(function ($data) {
-                $transformerName = '\\Byte5\\LaravelHarvest\\Transformer\\' . class_basename($this->model);
-                return (new $transformerName)->transformModelAttributes($data);
-        });
+            ->map(static fn(array $data) => $transformer->transformModelAttributes($data, $model));
+    }
+
+    private function getTransformer(string $model): TransformerContract
+    {
+        static $transformers;
+        if (isset($transformers[$model])) {
+            return $transformers[$model];
+        }
+
+        $transformerName = '\\Byte5\\LaravelHarvest\\Transformer\\' . class_basename($model);
+        return $transformers[$model] = new (class_exists($transformerName) ? $transformerName : OneOnOneTransformer::class);
     }
 
     private function getResultsKey(): string

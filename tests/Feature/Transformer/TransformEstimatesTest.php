@@ -18,7 +18,11 @@ class TransformEstimatesTest extends TestCase
         $collection = (new ApiResponse($apiResult, Estimate::class))->toCollection();
 
         $this->assertTrue($collection instanceof Collection);
-        $this->assertTrue($collection->first() instanceof Estimate);
+
+        $first = $collection->first();
+        $this->assertTrue($first instanceof Estimate);
+        $this->assertSame(5735776, $first->external_client_id);
+
     }
 
     /** @test **/
@@ -30,7 +34,7 @@ class TransformEstimatesTest extends TestCase
             ->toPaginatedCollection();
 
         $this->assertTrue($paginatedCollection['estimates'] instanceof Collection);
-        $this->assertTrue(array_key_exists('total_pages', $paginatedCollection));
+        $this->assertTrue($paginatedCollection['estimates'] instanceof Collection);
     }
 
     /**

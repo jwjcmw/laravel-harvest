@@ -18,7 +18,12 @@ class TransformRolesTest extends TestCase
         $collection = (new ApiResponse($apiResult, Role::class))->toCollection();
 
         $this->assertTrue($collection instanceof Collection);
-        $this->assertTrue($collection->first() instanceof Role);
+
+        $first = $collection->first();
+        $this->assertTrue($first instanceof Role);
+        $this->assertSame([
+            0 => 8083365,
+        ], $first->user_ids);
     }
 
     /** @test **/

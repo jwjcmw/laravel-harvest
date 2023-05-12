@@ -20,6 +20,7 @@ class TransformClientsTest extends TestCase
 
         $this->assertTrue($collection instanceof Collection);
         $this->assertTrue($collection->first() instanceof Client);
+        $this->assertSame(1234567, $collection->first()->external_id);
     }
 
     /** @test **/

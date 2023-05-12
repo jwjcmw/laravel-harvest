@@ -2,10 +2,13 @@
 
 namespace Byte5\LaravelHarvest\Models;
 
+use Byte5\LaravelHarvest\Traits\HasExternalRelations;
 use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
+    use HasExternalRelations;
+
     protected $casts = [
         'is_active' => 'boolean',
     ];
@@ -46,5 +49,10 @@ class Client extends Model
     public function timeEntries()
     {
         return $this->hasMany(TimeEntry::class);
+    }
+
+    protected function getExternalRelations(): array
+    {
+        return [];
     }
 }

@@ -14,13 +14,17 @@ class TransformReportsUninvoicedTest extends TestCase
     /** @test **/
     public function it_can_transform_reports_api_responses_into_their_corresponding_models()
     {
-        $apiResult = new FakeApiResponse($this->getFakeData());
+        $json = $this->getFakeData();
+        $apiResult = new FakeApiResponse($json);
 
         $collection = (new ApiResponse($apiResult, Result::class))->toCollection();
 
         $this->assertTrue($collection instanceof Collection);
         $this->assertSame(2, $collection->count());
         $this->assertTrue($collection->first() instanceof Result);
+
+        $this->assertSame($json['results'][0]['client_id'], $collection->first()->external_client_id);
+        $this->assertSame($json['results'][1]['client_id'], $collection->get(1)->external_client_id);
     }
 
     /**
@@ -31,10 +35,10 @@ class TransformReportsUninvoicedTest extends TestCase
         return [
             'results' => [
                 [
-
+                    'client_id' => 123
                 ],
                 [
-
+                    'client_id' => 321
                 ],
             ],
             'per_page' => 100,

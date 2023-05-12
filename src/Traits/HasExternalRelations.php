@@ -2,6 +2,7 @@
 
 namespace Byte5\LaravelHarvest\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -91,5 +92,42 @@ trait HasExternalRelations
         $externalRelations = $this->getExternalRelations();
         return in_array($relation, $externalRelations, true)
             ? $relation : $externalRelations[$relation];
+    }
+
+    public function fillWithExternalReferenceData(array $data, string $databaseKey = 'external_id'): static
+    {
+        foreach ($this->getExternalRelations() as $relation) {
+            $relationKey = $this->getRelationKey($relation);
+
+            $relationId = "{$relationKey}_id";
+            $externalRelationId = "external_{$relationId}";
+            if (Arr::has($data, $externalRelationId)) {
+                continue;
+            }
+
+            if (Arr::has($data, $relationId)) {
+                $data[$externalRelationId] = Arr::get($data, $relationId);
+            }
+
+            $relationId2 = "{$relationKey}.id";
+            if (Arr::has($data, $relationId2)) {
+                $data[$externalRelationId] = Arr::get($data, $relationId2);
+            }
+        }
+
+        if (!Arr::has($data, 'external_id') && Arr::has($data, 'id')) {
+            $data['external_id'] = Arr::get($data, 'id');
+            unset($data['id']);
+        }
+
+        $model = $this;
+        if (Arr::has($data, $databaseKey) && config('harvest.uses_database')) {
+            $model = $model->firstOrNew([$databaseKey => $data[$databaseKey]]);
+        }
+
+        // Update object data
+        array_walk($data, static fn($v, $k) => $model->{$k} = $v);
+
+        return $model;
     }
 }
