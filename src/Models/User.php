@@ -3,9 +3,12 @@
 namespace Byte5\LaravelHarvest\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Byte5\LaravelHarvest\Traits\HasExternalRelations;
 
 class User extends Model
 {
+    use HasExternalRelations;
+
     protected $casts = [
         'roles' => 'array',
         'has_access_to_all_future_projects' => 'boolean',
@@ -33,6 +36,11 @@ class User extends Model
         $this->setTable(
             config('harvest.table_prefix').config('harvest.table_names.users')
         );
+    }
+
+    protected function getExternalRelations(): array
+    {
+        return [];
     }
 
     public function expenses()
