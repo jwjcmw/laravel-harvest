@@ -18,6 +18,10 @@ use Byte5\LaravelHarvest\Endpoints\InvoicePayment;
 use Byte5\LaravelHarvest\Endpoints\Project;
 use Byte5\LaravelHarvest\Endpoints\ProjectAssignment;
 use Byte5\LaravelHarvest\Endpoints\ReportsUninvoiced;
+use Byte5\LaravelHarvest\Endpoints\ReportsTimeClient;
+use Byte5\LaravelHarvest\Endpoints\ReportsTimeProject;
+use Byte5\LaravelHarvest\Endpoints\ReportsTimeTask;
+use Byte5\LaravelHarvest\Endpoints\ReportsTimeTeam;
 use Byte5\LaravelHarvest\Endpoints\Role;
 use Byte5\LaravelHarvest\Endpoints\Task;
 use Byte5\LaravelHarvest\Endpoints\TaskAssignment;
@@ -42,6 +46,10 @@ use Byte5\LaravelHarvest\Traits\CanResolveEndpoints;
  * @method Project project()
  * @method ProjectAssignment projectAssignment()
  * @method ReportsUninvoiced reportsUninvoiced()
+ * @method ReportsTimeClient reportsTimeClients()
+ * @method ReportsTimeProject reportsTimeProjects()
+ * @method ReportsTimeTask reportsTimeTasks()
+ * @method ReportsTimeTeam reportsTimeTeams()
  * @method Role role()
  * @method Task task()
  * @method TaskAssignment taskAssignment()
@@ -63,7 +71,11 @@ use Byte5\LaravelHarvest\Traits\CanResolveEndpoints;
  * @property InvoicePayment invoicePayments
  * @property Project projects
  * @property ProjectAssignment projectAssignments
- * @property ReportsUninvoiced reportsUninvoiceds
+ * @property ReportsUninvoiced reportsUninvoiced
+ * @property ReportsTimeClient ReportsTimeClients
+ * @property ReportsTimeProject ReportsTimeProjects
+ * @property ReportsTimeTask ReportsTimeTasks
+ * @property ReportsTimeTeam ReportsTimeTeams
  * @property Role roles
  * @property Task tasks
  * @property TaskAssignment taskAssignments
