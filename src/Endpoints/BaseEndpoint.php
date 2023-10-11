@@ -89,7 +89,7 @@ abstract class BaseEndpoint
         return preg_replace('/\{.*\}/', $this->baseId, $tmpPath);
     }
 
-    public function updatedSince($dateTime)
+    public function updatedSince(string|Carbon $dateTime): void
     {
         if (! $dateTime instanceof Carbon) {
             $dateTime = Carbon::parse($dateTime);
@@ -97,4 +97,5 @@ abstract class BaseEndpoint
 
         $this->params += ['updated_since' => $dateTime->toIso8601ZuluString()];
     }
+    
 }
