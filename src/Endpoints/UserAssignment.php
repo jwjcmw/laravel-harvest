@@ -6,7 +6,7 @@ class UserAssignment extends BaseEndpoint
 {
     protected function getPath(): string
     {
-       return ($this->baseId) ? 'projects/{ID}/user_assignments' : 'user_assignments';
+       return 'user_assignments';
     }
 
     /**
